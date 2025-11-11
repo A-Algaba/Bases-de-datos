@@ -26,7 +26,8 @@ create table producto (
 create table cliente_compra_producto (
 	dni_cliente varchar (9),
     c_producto int,
-    primary key (dni_cliente, c_producto),
+    id_compra int,
+    primary key (dni_cliente, c_producto, id_compra),
     foreign key(dni_cliente) references clientes(dni),
     foreign key(c_producto) references producto(codigo)
 );
