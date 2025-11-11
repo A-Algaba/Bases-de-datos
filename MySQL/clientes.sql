@@ -3,7 +3,7 @@ create database clientes;
 use clientes;
 
 create table clientes (
-	dni int primary key auto_increment,
+	dni varchar (9) primary key,
     nombre varchar (20) not null,
     apellidos varchar (20) not null,
     direccion int not null,
@@ -24,9 +24,9 @@ create table producto (
 );
 
 create table cliente_compra_producto (
-	dni_cliente int,
+	dni_cliente varchar (9),
     c_producto int,
     primary key (dni_cliente, c_producto),
-    foreign key(dni_cliente) references proveedor(nif),
+    foreign key(dni_cliente) references clientes(dni),
     foreign key(c_producto) references producto(codigo)
 );
