@@ -36,8 +36,8 @@ create table PIEZA (
     nombre varchar(100) not null,
     color varchar(50),
     precio decimal(3,2), -- en este caso seria de precio 999,50 lo que estoy haciendo es poner tres digitos y despues de la coma solo dos digitios
-    categoria int,
-    FOREIGN KEY (categoria) REFERENCES CATEGORIA(codigo) -- esto si debe ir en mayusculas
+    codigo_categoria int,
+    FOREIGN KEY (codigo_categoria) REFERENCES CATEGORIA(codigo) -- esto si debe ir en mayusculas
 );
 
 create table proovedor_suministra_pieza (
