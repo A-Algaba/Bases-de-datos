@@ -107,3 +107,7 @@ select upper(Nombre) from Clientes;
 -- Ejercicio 22, Convertir descripciones de productos a minúsculas.
 
 select lower(Descripcion) from Productos;
+
+-- Ejercicio 23, Nombre + dirección en mayúsculas en una columna llamada "Nombre_Completo"
+
+select nombre, direccion as Nombre_completo from Clientes;
