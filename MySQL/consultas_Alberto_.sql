@@ -108,6 +108,34 @@ select upper(Nombre) from Clientes;
 
 select lower(Descripcion) from Productos;
 
+-- Practica por terminar,  esto  ya es por mi cuenta
+
 -- Ejercicio 23, Nombre + dirección en mayúsculas en una columna llamada "Nombre_Completo"
 
-select nombre, direccion as Nombre_completo from Clientes;
+select upper(concat(Nombre, " - " , Direccion)) as Nombre_completo from Clientes;
+
+-- Ejercicio 24, Cambiar el formato de los nombres de productos para que comiencen con "Producto:" seguido de su descripción. Crear un alias Producto_Descripcion.
+
+select concat("Producto: ", Descripcion) as Producto_Descripcion from Productos;
+
+-- Ejercicio 25, Extraer las tres primeras letras del nombre de cada país de fabricantes:
+
+select left (Pais, 3) as primeras_letras from Fabricantes;
+
+-- Ejercicio 26, Reemplazar "Calle" por "Avda." en las direcciones de cliente
+
+update Clientes set Direccion = replace(Direccion, "Calle", "Avda.") where Direccion like "Calle%" and Id_cliente;
+
+select Direccion as datos_modificados from Clientes;
+
+-- Ejercicio 27, Calcular cuántos días han pasado desde cada pedido hasta hoy (función SYSDATE):
+
+select sysdate();
+
+-- Ejercicio 30, Obtener los pedidos realizados en 2023.
+
+select Fecha_pedido as pedidos_2023 from Pedidos where year(Fecha_pedido) = 2023;
+
+-- Ejercicio 38 Mostrar “CARO” para productos => 500 o “BARATO” según el precio
+
+select Descripcion, Precio, if(Precio >= 500, "CARO", "BARATO") as tabla_precios from Productos;
