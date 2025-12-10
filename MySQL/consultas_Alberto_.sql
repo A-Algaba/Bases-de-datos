@@ -110,11 +110,9 @@ select lower(Descripcion) from Productos;
 
 select lower(Descripcion) from Productos;
 
--- Practica por terminar,  esto  ya es por mi cuenta
+-- Parte 2
 
 -- Ejercicio 23, Nombre + dirección en mayúsculas en una columna llamada "Nombre_Completo"
-
-select nombre, direccion as Nombre_completo from Clientes;
 
 select upper(concat(Nombre, " - " , Direccion)) as Nombre_completo from Clientes;
 
@@ -128,18 +126,60 @@ select left (Pais, 3) as primeras_letras from Fabricantes;
 
 -- Ejercicio 26, Reemplazar "Calle" por "Avda." en las direcciones de cliente
 
-update Clientes set Direccion = replace(Direccion, "Calle", "Avda.") where Direccion like "Calle%" and Id_cliente;
-
-select Direccion as datos_modificados from Clientes;
+select Nombre, replace(Direccion, "Calle", "Avda.") as Direccion_Modificada from Clientes;
 
 -- Ejercicio 27, Calcular cuántos días han pasado desde cada pedido hasta hoy (función SYSDATE):
 
-select sysdate();
+select 	N_pedido, Fecha_pedido, datediff(sysdate(), Fecha_pedido) as tabla_pedidos_dias from Pedidos;
+
+-- Ejercicio 28, Obtener la última fecha del mes en que se realizó cada pedido (función LAST_DAY):
+
+select N_pedido, Fecha_pedido, last_day(Fecha_pedido) as ultimo_dia_mes from Pedidos;
+
+-- Ejercicio 29, Asignar un estado personalizado a los pedidos dependiendo de su estado actual, 'Finalizado', 'Anulado' o 'En Gestión' (expresión CASE):
+
+select N_pedido, Estado, case when Estado = "Completado" then "Finalizado" when Estado = "Cancelado" then "Anulado" else "En gestion" end as Estado_pedidos from Pedidos;
 
 -- Ejercicio 30, Obtener los pedidos realizados en 2023.
 
 select Fecha_pedido as pedidos_2023 from Pedidos where year(Fecha_pedido) = 2023;
 
+-- Ejercicio 31, Elevar el precio de cada producto al cuadrado
+
+select Id_producto, Descripcion, pow(Precio, 2) as Precio_Cuadrado from productos;
+
+-- Ejercicio 32, Redondear el precio de cada producto a 1 decimal
+
+select Id_producto, Descripcion, round(Precio, 1) as precio_redondeado from Productos;
+
+-- Ejercicio 33, Extraer el año de las fechas de pedido:
+
+select N_pedido, year(Fecha_pedido) as anio from pedidos;
+
+-- Ejercicio 34, Calcular cuántos pedidos se hicieron en un año específico (por ejemplo, 2024):
+
+select count(*) as Total_Pedidos_2024 from Pedidos where year(Fecha_pedido) = 2024;
+
+-- Ejercicio 35, Invertir el nombre de los clientes:
+
+select Nombre, reverse(Nombre) as nombre_cliente_inverso from Clientes;
+
+-- Ejercicio 36, Mostrar la longitud de cada nombre de cliente
+
+select Nombre, length(Nombre) as longitud from Clientes;
+
+-- Ejercicio 37, Mostrar solo los 4 primeros caracteres del nombre del cliente
+
+select Nombre, left(Nombre, 4) as Primeros_4 from Clientes;
+
 -- Ejercicio 38 Mostrar “CARO” para productos => 500 o “BARATO” según el precio
 
 select Descripcion, Precio, if(Precio >= 500, "CARO", "BARATO") as tabla_precios from Productos;
+
+-- Ejercicio 39, Cantidad total de productos vendidos por cada producto
+
+select p.Id_producto, p.Descripcion, sum(dp.Cant) as Total_Vendido from Productos p join Detalles_Pedido dp on p.Id_producto = dp.Id_producto group by p.Id_producto, p.Descripcion;
+
+-- Ejercicio 40, Número de clientes por cada ciudad (Añade algo a la consulta para mostrar solo las ciudades que tengan más de un cliente)
+
+select ciudad, count(*) as total_clientes from Clientes group by Ciudad having count(*) > 1;
