@@ -123,8 +123,13 @@ select concat(nombre, "-", apellido) as nombre_apellidos from jugador;
 select * from jugador where apellido like "%ez%";
 
 -- 27
+
 select lower(nombre) as nombre_minusculas from jugador;
 
 -- 28
 
 select nombre, fecha_alta, year(fecha_alta) as fecha_alta_jugadores from jugador;
+
+-- 29
+select * from jugador;
+select equipo, sum(salario) as salario_medio_equipo from jugador group by equipo; -- estoy diciendo que de la columna equipo sume el salario, de la tabla jugador y lo agrupe por equipo
