@@ -107,6 +107,28 @@ select * from productos where descuento > 0 and stock > "100";
 
 select * from productos where precio not between 100 and 200;
 
--- 28
+-- 29
 
 select * from clientes where ciudad = "madrid" or ciudad = "barcelona" or ciudad = "valencia";
+
+-- 30
+
+select concat(nombre, " - ", apellido) as nombre_y_apellidos from clientes;
+
+-- 31
+
+select upper(nombre) as productos_mayusculas from productos;
+
+-- 32
+
+select nombre ,length(nombre) as caracteres_num_productos from productos; -- los espacios tambien los cuenta
+
+-- 33
+
+select categoria, count(*) as ventas_categoria from productos group by categoria;
+
+-- 34
+
+select * from clientes;
+
+select ciudad, count(id_cliente) as ciudad_por_clientes from clientes group by ciudad having count(id_cliente) > 2;
