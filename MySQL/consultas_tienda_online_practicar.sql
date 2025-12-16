@@ -132,3 +132,27 @@ select categoria, count(*) as ventas_categoria from productos group by categoria
 select * from clientes;
 
 select ciudad, count(id_cliente) as ciudad_por_clientes from clientes group by ciudad having count(id_cliente) > 2;
+
+-- 35
+
+select * from ventas;
+select metodo_pago, count(*) as metodo_pago_maximo from ventas group by metodo_pago;
+
+-- 36
+
+select * from productos;
+select categoria ,avg(precio) as precio_promedio from productos group by categoria having precio_promedio > 100;
+
+-- 37
+
+select nombre, avg(precio) as precio_promedio, sum(precio) as precio_mayor from productos group by nombre;
+
+-- 38
+
+select * from clientes where total_gastado > 2000;
+
+-- 39
+
+select * from productos where valoracion >= 4.5;
+
+-- 40
