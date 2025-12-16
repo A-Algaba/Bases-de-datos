@@ -88,3 +88,66 @@ select pais, substr(pais,1,2) from fabricantes;
 select pais, left(pais,3) as codigo from fabricantes;
 
 -- ambas opciones son validas
+
+-- 26
+
+select nombre ,replace(direccion, "Calle", "avenida") from clientes;
+
+-- 27
+
+select n_pedido, fecha_pedido, datediff(sysdate(),fecha_pedido) as dias_desde_ from pedidos;
+
+-- 28
+
+select n_pedido, fecha_pedido, last_day(fecha_pedido) as ultimo_dia from pedidos;
+
+-- 29
+
+select * from pedidos;
+
+select n_pedido, estado, case when estado = "completado" then "finalizado" when estado = "cancelado" then "anulado" end as estado_personalizado from pedidos;
+
+-- el end es para finalizar un caso/condicional de consultas
+
+-- 30
+
+select * from pedidos where year(fecha_pedido) = 2023;
+
+-- 31
+
+select *, pow(precio,2) as precio_elevado from productos;
+
+-- pow calcula potencias elevandolas al cuadrado
+
+-- 32
+
+select *, round(precio, 1) as precio_redondeado from productos;
+
+-- 33
+
+select n_pedido, year(fecha_pedido) from pedidos;
+
+-- 34
+
+select count(*) from pedidos where year(fecha_pedido) = 2024;
+
+-- 35
+
+select nombre, reverse(nombre) from clientes;
+
+-- 36
+
+select nombre, length(nombre) from clientes where length(nombre) >= 10;
+
+-- 38
+
+select descripcion, precio, case when precio >= 500 then "CARO" else "BARATO" end as clasificacion from productos;
+
+-- 39
+
+select id_producto, sum(cant) as suma from detalles_pedido group by id_producto having suma >= 2;
+
+-- 40
+insert into clientes (nombre, direccion, ciudad, telefono, email) values 
+('Alberto Algaba', 'Calle Huelma', 'Madrid', '3857857484', 'aac0077@alu.medac.es');
+select ciudad, count(*) as cantidad from clientes group by ciudad having cantidad >= 2; -- decir agrupacion o agrupar = usar group by;
