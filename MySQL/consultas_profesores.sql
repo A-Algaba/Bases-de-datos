@@ -40,3 +40,20 @@ select * from profesores natural join imparte i join asignaturas a on a.codigo =
 
 select * from profesores p join imparte i on p.dni = i.dni 
 join asignaturas a on a.codigo = i.asignatura;
+
+
+-- 7 DNI y el nombre del coordinador y las descripcion de la asignatura que coordina
+
+select * from coordinadores c join asignaturas a on c.asig = a.codigo;
+
+-- 8 DNI del profesor y la suma de los creditos que prepara
+
+select dni, sum(creditos) from prepara p join asignaturas a on p.asignatura = a.codigo group by dni;
+
+-- 9. LEFT JOIN. datos de todos los profesores y si imparte alguna asignatura, los datos de ella.
+
+select * from profesores p left join imparte i on p.dni = i.dni;
+
+-- 10 RIGHT JOIN. datos de todos los profesores y si prepara alguna asignatura los datos de ella.
+
+select * from prepara p  right join profesores pr on p.dni = pr.dni;
