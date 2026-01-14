@@ -52,7 +52,3 @@ select j.nombre, j.salario, e.nombre from jugador j join equipo e on j.id_jugado
 select e.nombre, p.arbitro, p.fecha from partido p join equipo e on p.id_partido = e.id_equipo where year(p.fecha) = 2012;
 
 select * from jugador;
-
--- Ejercicio 6: Listar todos los equipos y contar cuántos jugadores tiene cada uno (incluyendo equipos sin jugadores).
-
-select * from equipo e left join jugador j on j.equipo = e.id_equipo;
