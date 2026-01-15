@@ -7,20 +7,28 @@ select * from jugador where altura >= all(select altura from jugador);
 
 -- 2 Datos de todos los jugadores que pertenecen al Caja Laboral.
 
-select * from jugador j join equipo e on j.id_jugador = e.id_equipo where e.nombre = "Caja Laboral";
+select * from jugador j join equipo e on j.equipo = e.id_equipo where e.nombre = "Caja Laboral";
 
 -- 3 Suma de las alturas de los jugadores que sean del CAI Zaragoza o del Real Madrid.
 
-select e.nombre ,sum(altura) from jugador j join equipo e on j.id_jugador = e.id_equipo 
-group by id_jugador order by j.altura;
+select e.nombre ,sum(altura) suma_altura from jugador j join equipo e on j.equipo = e.id_equipo 
+group by e.nombre having e.nombre = "CAI Zaragoza" or e.nombre = "Real Madrid";
 
 -- 4 Datos de los jugadores que miden más que todos los jugadores del Caja Laboral.
 
-select *, sum(altura) as altura_mayor_caja_laboral from jugador j left join equipo e on (j.id_jugador = e.id_equipo) group by id_jugador;
+select j.* from jugador j join equipo e on j.equipo = e.id_equipo where j.altura > 
+(select j.altura from jugador j join equipo e on j.equipo = e.id_equipo where e.nombre = "Caja Laboral" order by j.altura desc limit 1);
+
+-- version mas simple
+
+select * from jugador where altura >(
+select max(altura) from jugador j join equipo e on j.equipo = e.id_equipo where e.nombre = "Caja Laboral"); -- subconsulta con los datos de los jugadores que midan mas que los jugadores de caja laboral
 
 -- 5 Datos de los jugadores mejor pagado y peor pagado de la liga.
 
-select * from jugador where salario > (select salario from jugador where id_jugador and nombre);
+select * from jugador where salario = (select max(salario) from jugador) or
+salario = (select min(salario) from jugador);
+
 
 
 
