@@ -25,7 +25,7 @@ select * from profesores cross join asignaturas;
 
 -- 4.Suma de creditos que imparte el profesor segun su dni
 
-select i.dni, sum(a.creditos) as suma_total_creditos from asignaturas a join imparte i on a.codigo = i.asignatura group by i.dni;
+select i.dni, sum(a.creditos) as suma_creditos from asignaturas a join imparte i on a.codigo = i.asignatura group by i.dni having suma_creditos >= 12;
 
 -- 5.Mostrar el nombre de los profesores que imparten alguna asignatura
 
@@ -57,3 +57,20 @@ select * from profesores p left join imparte i on p.dni = i.dni;
 -- 10 RIGHT JOIN. datos de todos los profesores y si prepara alguna asignatura los datos de ella.
 
 select * from prepara p  right join profesores pr on p.dni = pr.dni;
+
+-- SUBCONSULTAS
+
+-- 1.mostrar todos los datos de las asignaturas que tienen mas creditos que la asignatura PC
+
+select * from asignaturas where creditos > (select creditos from asignaturas where codigo = "PC");
+
+-- 2.mostrar la descripcion de las asignaturas que tiene mas creditos que todas las demas
+
+select descripcion from asignaturas where creditos = (select max(creditos) from asignaturas);
+
+-- 3. nombre de las asignaturas que no son las que menos creditos tienen
+
+select * from asignaturas where creditos > (select min(creditos) from asignaturas);
+
+select * from asignaturas where creditos != (select min(creditos) from asignaturas);
+

@@ -2,10 +2,8 @@ use liga;
 
 -- 1 el jugador mas alto de la liga
 
-select * from jugador;
-
-select id_jugador,nombre, apellido, posicion ,max(altura) as altura_maxima 
-from jugador group by id_jugador order by id_jugador asc limit 1;
+select * from jugador where altura = (select max(altura) from jugador);
+select * from jugador where altura >= all(select altura from jugador);
 
 -- 2 Datos de todos los jugadores que pertenecen al Caja Laboral.
 
@@ -23,6 +21,9 @@ select *, sum(altura) as altura_mayor_caja_laboral from jugador j left join equi
 -- 5 Datos de los jugadores mejor pagado y peor pagado de la liga.
 
 select * from jugador where salario > (select salario from jugador where id_jugador and nombre);
+
+
+
 
 -- consultas aparte inventadas
 
