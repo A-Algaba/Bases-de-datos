@@ -21,23 +21,42 @@ select j.* from jugador j join equipo e on j.equipo = e.id_equipo where j.altura
 
 -- version mas simple
 
-select * from jugador where altura >(
-select max(altura) from jugador j join equipo e on j.equipo = e.id_equipo where e.nombre = "Caja Laboral"); -- subconsulta con los datos de los jugadores que midan mas que los jugadores de caja laboral
+select * from jugador where altura >(select max(altura) from jugador j 
+join equipo e on j.equipo = e.id_equipo where e.nombre = "Caja Laboral"); -- subconsulta con los datos de los jugadores que midan mas que los jugadores de caja laboral
 
 -- 5 Datos de los jugadores mejor pagado y peor pagado de la liga.
 
 select * from jugador where salario = (select max(salario) from jugador) or
 salario = (select min(salario) from jugador);
 
+-- 6.Datos del jugador más antiguo, es decir, el que lleva más tiempo dado de alta en un equipo.
+
+select * from  jugador where fecha_alta = (select min(fecha_alta) from jugador);
+
+-- 7.Datos de los equipos que tienen más de tres jugadores registrados.
+
+select count(j.id_jugador) as num_jugadores , e.id_equipo, e.nombre, e.ciudad from equipo e join jugador j on e.id_equipo = j.equipo group by e.id_equipo, e.nombre, e.ciudad having count(j.id_jugador) >= 3;
+
+-- 8. Mostrar el nombre del jugador, el nombre del equipo al que pertenece y su posición.
+
+select j.nombre, e.nombre, j.posicion from jugador j join equipo e on j.equipo = e.id_equipo;
 
 
+-- 9. Mostrar el nombre de cada equipo y el nombre de su capitán o capitanes.
 
+select e.nombre, j.id_capitan, j.nombre from equipo e join jugador j on e.id_equipo = j.equipo;
+
+-- 10. Datos de los equipos y el número de partidos que han jugado como locales.
+
+select e.*, count(p.local) as partidos_jugados_local from equipo e join partido p on e.id_equipo = p.local group by p.local;
+
+-- 11. Datos de los jugadores cuyos equipos hayan jugado al menos tres partidos como visitantes.
+
+select * from partido p join equipo e on p.local = e.id_equipo ;
 
 -- consultas aparte inventadas
 
 -- Ejercicio 1: Obtener el nombre completo de todos los jugadores junto con el nombre y ciudad de su equipo.
-
-select j.nombre ,e.nombre, e.ciudad from jugador j join equipo e on j.id_jugador = e.id_equipo;
 
 -- CORRECCIÓN:
 select j.nombre, j.apellido, e.nombre, e.ciudad 
