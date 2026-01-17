@@ -54,6 +54,11 @@ select e.*, count(p.local) as partidos_jugados_local from equipo e join partido 
 
 select * from partido p join equipo e on p.local = e.id_equipo ;
 
+-- 12. Datos de los equipos y el salario máximo de sus jugadores.
+
+select *, max(j.salario) from equipo e join jugador j on e.id_equipo = j.equipo group by id_jugador;
+
+
 -- consultas aparte inventadas
 
 -- Ejercicio 1: Obtener el nombre completo de todos los jugadores junto con el nombre y ciudad de su equipo.
