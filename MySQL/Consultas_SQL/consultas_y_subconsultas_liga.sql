@@ -56,8 +56,15 @@ select * from partido p join equipo e on p.local = e.id_equipo ;
 
 -- 12. Datos de los equipos y el salario máximo de sus jugadores.
 
-select *, max(j.salario) from equipo e join jugador j on e.id_equipo = j.equipo group by id_jugador;
+select e.*, max(j.salario) as salario_maximo_jugador from equipo e join jugador j on e.id_equipo = j.equipo group by e.id_equipo; 
 
+-- 14. Datos de los equipos que hayan jugado algún partido contra el Valencia en casa.
+
+select e.* from partido p join equipo e on e.id_equipo = p.local  where e.nombre = "P.E. Valencia";
+
+-- 15. Mostrar el salario medio de los jugadores de cada equipo.
+
+select e.nombre, id_jugador,j.nombre,avg(j.salario) as  salario_medio from equipo e join jugador j on e.id_equipo = j.equipo group by j.id_jugador;
 
 -- consultas aparte inventadas
 
