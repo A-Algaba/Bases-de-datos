@@ -74,3 +74,37 @@ select * from asignaturas where creditos > (select min(creditos) from asignatura
 
 select * from asignaturas where creditos != (select min(creditos) from asignaturas);
 
+-- 4 datos de las asignaturas que se imparten
+
+select * from asignaturas where codigo in(select asignatura from imparte);
+
+-- 5 datos de las asignaturas que NO se imparte
+
+select * from asignaturas where codigo not in(select asignatura from imparte);
+
+-- 6 datos de los profesores que imparten alguna asignatura
+
+select * from profesores where dni in (select dni from imparte);
+
+select * from profesores natural join imparte;
+
+-- 7 datos de los profesores que NO imparten ninguna asignatura
+
+select * from profesores where dni not in (select dni from imparte);
+
+
+-- 8 datos de los profesores que no preparan ninguna asignatura
+
+select * from profesores where dni not in (select dni from prepara);
+
+-- 9 datos de los profesores que preparan alguna asignatura
+
+select * from profesores where dni in(select dni from prepara);
+
+-- 10 datos de los profesores que no preparan ni imparten ninguna asignatura
+
+select * from profesores where dni not in(select dni from prepara) and dni not in (select dni from imparte);
+
+-- 11 ¿tenemos profesores?
+
+select exists (select * from profesores) as respuesta;

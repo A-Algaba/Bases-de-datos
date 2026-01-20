@@ -35,12 +35,16 @@ select * from  jugador where fecha_alta = (select min(fecha_alta) from jugador);
 
 -- 7.Datos de los equipos que tienen más de tres jugadores registrados.
 
-select count(j.id_jugador) as num_jugadores , e.id_equipo, e.nombre, e.ciudad from equipo e join jugador j on e.id_equipo = j.equipo group by e.id_equipo, e.nombre, e.ciudad having count(j.id_jugador) >= 3;
+select count(j.id_jugador) as num_jugadores , e.id_equipo, e.nombre, e.ciudad from equipo e join jugador j on e.id_equipo = j.equipo 
+group by e.id_equipo, e.nombre, e.ciudad having count(j.id_jugador) >= 3;
+
+-- version mejorada
+
+select e.id_equipo, e.nombre, count(*) as num_jugadores from equipo e join jugador j on e.id_equipo = j.equipo group by e.id_equipo having num_jugadores > 3;
 
 -- 8. Mostrar el nombre del jugador, el nombre del equipo al que pertenece y su posición.
 
 select j.nombre, e.nombre, j.posicion from jugador j join equipo e on j.equipo = e.id_equipo;
-
 
 -- 9. Mostrar el nombre de cada equipo y el nombre de su capitán o capitanes.
 
@@ -52,19 +56,22 @@ select e.*, count(p.local) as partidos_jugados_local from equipo e join partido 
 
 -- 11. Datos de los jugadores cuyos equipos hayan jugado al menos tres partidos como visitantes.
 
-select * from partido p join equipo e on p.local = e.id_equipo ;
+select * from jugador where equipo in(
+select visitante from partido group by visitante having count(*) >= 3);
 
 -- 12. Datos de los equipos y el salario máximo de sus jugadores.
 
-select e.*, max(j.salario) as salario_maximo_jugador from equipo e join jugador j on e.id_equipo = j.equipo group by e.id_equipo; 
+select e.*, max(j.salario) as salario_maximo_jugador from equipo e join jugador j on e.id_equipo = j.equipo group by e.id_equipo;
 
 -- 14. Datos de los equipos que hayan jugado algún partido contra el Valencia en casa.
 
-select e.* from partido p join equipo e on e.id_equipo = p.local  where e.nombre = "P.E. Valencia";
+select e.* from partido p join equipo e on e.id_equipo = p.local where e.nombre = "P.E. Valencia";
 
 -- 15. Mostrar el salario medio de los jugadores de cada equipo.
 
 select e.nombre, id_jugador,j.nombre,avg(j.salario) as  salario_medio from equipo e join jugador j on e.id_equipo = j.equipo group by j.id_jugador;
+
+
 
 -- consultas aparte inventadas
 
