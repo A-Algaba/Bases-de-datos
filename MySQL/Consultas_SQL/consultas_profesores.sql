@@ -108,3 +108,39 @@ select * from profesores where dni not in(select dni from prepara) and dni not i
 -- 11 ¿tenemos profesores?
 
 select exists (select * from profesores) as respuesta;
+
+
+-- EJERCICIOS INVENTADOS
+
+
+-- 1. Obtener el nombre de todos los profesores junto con las asignaturas que imparten (código y descripción de la asignatura).
+
+select p.nombre, a.codigo , a.descripcion from profesores p join imparte i on i.dni = p.dni join asignaturas a on i.asignatura = a.codigo;
+
+-- 2. Listar el nombre de los coordinadores junto con el código y descripción de la asignatura que coordinan. Incluir también los coordinadores que no tienen asignatura asignada.
+
+select c.nombre, a.codigo, a.descripcion from coordinadores c left join asignaturas a on c.asig = a.codigo;
+
+--  3. Mostrar el nombre de los profesores, la descripción de las asignaturas que preparan y los créditos totales (teóricos + prácticos) de cada asignatura.
+
+select p.nombre, a.descripcion, a.creditos, a.creditosp from profesores p natural join prepara pe join asignaturas a on pe.asignatura = a.codigo;
+
+-- 4. Obtener el nombre de todos los profesores y las asignaturas que imparten. Incluir también los profesores que no imparten ninguna asignatura.
+
+select * from profesores p left join imparte i on p.dni = i.dni;
+
+-- 5. Listar todas las asignaturas con su descripción y el nombre de los profesores que las preparan. Mostrar también las asignaturas que nadie prepara.
+
+select a.codigo, a.descripcion, p.dni,  pr.nombre from asignaturas a left join prepara p  on p.asignatura = a.codigo right join profesores pr on pr.dni = p.dni;
+
+-- 6. Encontrar los nombres de los profesores que preparan más asignaturas que las que imparten.
+
+select * from profesores where dni in (select dni from prepara);
+
+-- 7. Obtener el nombre y DNI de los profesores que preparan todas las asignaturas que tienen créditos prácticos (creditosp) no nulos.
+
+select * from profesores where dni in (select dni from imparte where asignatura in (select codigo from asignaturas where creditosp is not null));
+
+-- 8. Listar los nombres de las asignaturas que son preparadas pero no impartidas por ningún profesor.
+
+select * from  asignaturas where codigo in (select asignatura from prepara);
