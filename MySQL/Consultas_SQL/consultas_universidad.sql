@@ -28,3 +28,17 @@ select * from persona p join profesor pr on (pr.id_profesor = p.id);
 
 select p.nombre, p.apellido1, p.apellido2, d.nombre from persona p join profesor pr on (pr.id_profesor = p.id) join departamento d on (pr.id_profesor = d.id);
 
+-- 6 .Mostrar el nombre y apellidos de los profesores y el nombre de su departamento.
+
+select per.nombre, per.apellido1, per.apellido2, d.nombre from profesor pro join persona per on (per.id = pro.id_profesor) 
+join departamento d on (pro.id_departamento = d.id);
+
+-- 7.Saca todos los datos de los grados que tengan o no asignaturas asignadas.
+
+select * from grado g  left join asignatura a on (g.id = a.id_grado);
+
+select * from asignatura a right join grado g on (g.id = a.id_grado);
+
+-- 8. saca todas las asignaturas tengan o no profesores
+
+select * from asignatura a left join profesor p on (a.id_profesor = p.id_profesor);
