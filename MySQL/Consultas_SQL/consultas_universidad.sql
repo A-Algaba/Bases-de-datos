@@ -114,4 +114,18 @@ select * from profesor where id_departamento = (select id from departamento wher
 
 select * from alumno_se_matricula_asignatura where id_curso_escolar = (select id from curso_escolar where anyo_inicio = 2018 and anyo_fin = 2019);
 
-	
+-- 10. Obtener las asignaturas que tengan el mismo número de créditos que la asignatura “Bases de Datos”.
+
+select * from asignatura where creditos >= (select creditos from asignatura where nombre = "bases de datos");
+
+-- 11. Mostrar los grados que tengan al menos una asignatura sin profesor asignado.
+
+select * from grado where id in (select id_grado from asignatura where id_profesor is null);
+
+-- 12. Mostrar las asignaturas impartidas por profesores del departamento de Matemáticas.
+
+select * from asignatura where id_profesor in (select id_profesor from profesor where id_departamento in (select id from departamento where nombre = "matematicas"));
+
+-- 13. Obtener el nombre y apellidos de los alumnos que estén matriculados en la asignatura llamada “Cálculo”.
+
+select * from persona where id in (select id_alumno from alumno_se_matricula_asignatura where id_asignatura in (select id from asignatura where nombre = "calculo"));
