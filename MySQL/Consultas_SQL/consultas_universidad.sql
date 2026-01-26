@@ -43,6 +43,24 @@ select * from asignatura a right join grado g on (g.id = a.id_grado);
 
 select * from asignatura a left join profesor p on (a.id_profesor = p.id_profesor);
 
+-- 9. Datos de los profesores que imparten alguna asignatura
+
+select * from asignatura where id_profesor in (select id_profesor from profesor);
+
+-- 10. Cantidad de créditos que imparte cada profesor según su nif.
+
+-- 11. Mostrar datos de las asignaturas que tienen más créditos que todas las demás.
+
+select * from asignatura where creditos >= (select max(creditos) from asignatura);
+
+-- 12. Mostrar datos de las asignaturas con menos créditos
+
+select * from asignatura where creditos <= (select min(creditos) from asignatura);
+
+-- 14. Asignaturas que pertenecen al mismo grado que “Bases de Datos”
+
+select * from grado where id in (select id_grado from asignatura where nombre = "Bases de datos" );
+
 /*===========================================================================================================================================================================*/
 
 -- Consultas inventadas
