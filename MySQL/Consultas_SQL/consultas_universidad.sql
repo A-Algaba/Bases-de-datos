@@ -113,6 +113,63 @@ select a.nombre as nombre_asignatura, g.nombre as nombre_grado from asignatura a
 
 -- Mostrar el nombre de todas las asignaturas, el nombre de su grado, y el nombre y apellidos del profesor que las imparte.
 
+select g.nombre as  "nombre del grado", a.nombre as "nombre de la asignatura",
+per.nombre as "nombre del profesor", per.apellido1 as "apellido1 del profesor", 
+per.apellido2 as "apellido2 del profesor" from grado g join asignatura a on (g.id = a.id_grado) 
+natural join profesor pro join persona per on (per.id = pro.id_profesor);
+
+-- Mostrar el nombre y apellidos de los profesores junto con el nombre de su departamento.
+
+select d.nombre as "nombre del departamento"
+,per.nombre as "nombre del profesor",
+per.apellido1 as "apellido1 del profesor",
+per.apellido2 as "apellido2 del profesor" from departamento d join profesor pro on (d.id = pro.id_profesor) join persona per on (per.id = pro.id_profesor);
+
+-- Obtener el número de asignaturas que imparte cada profesor, mostrando su nombre y apellidos.
+
+select count(a.id) as num_asignaturas, per.nombre, per.apellido1, per.apellido2 
+from asignatura a natural join profesor pro join persona per on (pro.id_profesor = per.id) group by per.nombre, per.apellido1, per.apellido2;
+
+-- Mostrar los datos de todos los grados, tengan o no asignaturas asociadas.
+
+select * from grado g left join asignatura a on (g.id = a.id_grado);
+
+-- Mostrar los datos de todas las asignaturas, tengan o no profesor asignado.
+
+select * from asignatura a natural join profesor pro;
+
+-- Datos de los profesores que imparten alguna asignatura
+
+select per.nombre as "nombre del profesor", a.nombre from persona per join profesor pro on (pro.id_profesor = per.id)  join asignatura a on (a.id_profesor = pro.id_profesor);
+
+-- Cantidad de créditos que imparte cada profesor según su nif.
+
+select sum(creditos), per.nif from asignatura a natural join profesor pro join persona per on (per.id = pro.id_profesor) group by per.nif;
+
+-- Mostrar datos de las asignaturas que tienen más créditos que todas las demás.
+
+select * from asignatura where creditos = (select max(creditos) from asignatura);
+
+-- Mostrar datos de las asignaturas con menos créditos
+
+select * from asignatura where creditos = (select min(creditos) from asignatura);
+
+-- Muestra por cada grado la suma de sus créditos.
+
+select sum(creditos) as suma_creditos, g.nombre from asignatura a join grado g on (a.id_grado = g.id) group by g.nombre;
+
+-- Asignaturas que pertenecen al mismo grado que “Bases de Datos”
+
+select * from asignatura where id_grado in (select id_grado from asignatura where nombre = "bases de datos");
+
+-- Nombre de las asignaturas que no son las que menos créditos tienen
+
+select * from asignatura where creditos >= (select max(creditos) from asignatura);
+
+-- Nombre de las asignaturas que no son las que más créditos tienen
+
+select * from asignatura where creditos <= (select min(creditos) from asignatura);
+
 
 /*===========================================================================================================================================================================*/
 
