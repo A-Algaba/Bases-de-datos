@@ -113,63 +113,6 @@ select a.nombre as nombre_asignatura, g.nombre as nombre_grado from asignatura a
 
 -- Mostrar el nombre de todas las asignaturas, el nombre de su grado, y el nombre y apellidos del profesor que las imparte.
 
-select g.nombre as  "nombre del grado", a.nombre as "nombre de la asignatura",
-per.nombre as "nombre del profesor", per.apellido1 as "apellido1 del profesor", 
-per.apellido2 as "apellido2 del profesor" from grado g join asignatura a on (g.id = a.id_grado) 
-natural join profesor pro join persona per on (per.id = pro.id_profesor);
-
--- Mostrar el nombre y apellidos de los profesores junto con el nombre de su departamento.
-
-select d.nombre as "nombre del departamento"
-,per.nombre as "nombre del profesor",
-per.apellido1 as "apellido1 del profesor",
-per.apellido2 as "apellido2 del profesor" from departamento d join profesor pro on (d.id = pro.id_profesor) join persona per on (per.id = pro.id_profesor);
-
--- Obtener el número de asignaturas que imparte cada profesor, mostrando su nombre y apellidos.
-
-select count(a.id) as num_asignaturas, per.nombre, per.apellido1, per.apellido2 
-from asignatura a natural join profesor pro join persona per on (pro.id_profesor = per.id) group by per.nombre, per.apellido1, per.apellido2;
-
--- Mostrar los datos de todos los grados, tengan o no asignaturas asociadas.
-
-select * from grado g left join asignatura a on (g.id = a.id_grado);
-
--- Mostrar los datos de todas las asignaturas, tengan o no profesor asignado.
-
-select * from asignatura a natural join profesor pro;
-
--- Datos de los profesores que imparten alguna asignatura
-
-select per.nombre as "nombre del profesor", a.nombre from persona per join profesor pro on (pro.id_profesor = per.id)  join asignatura a on (a.id_profesor = pro.id_profesor);
-
--- Cantidad de créditos que imparte cada profesor según su nif.
-
-select sum(creditos), per.nif from asignatura a natural join profesor pro join persona per on (per.id = pro.id_profesor) group by per.nif;
-
--- Mostrar datos de las asignaturas que tienen más créditos que todas las demás.
-
-select * from asignatura where creditos = (select max(creditos) from asignatura);
-
--- Mostrar datos de las asignaturas con menos créditos
-
-select * from asignatura where creditos = (select min(creditos) from asignatura);
-
--- Muestra por cada grado la suma de sus créditos.
-
-select sum(creditos) as suma_creditos, g.nombre from asignatura a join grado g on (a.id_grado = g.id) group by g.nombre;
-
--- Asignaturas que pertenecen al mismo grado que “Bases de Datos”
-
-select * from asignatura where id_grado in (select id_grado from asignatura where nombre = "bases de datos");
-
--- Nombre de las asignaturas que no son las que menos créditos tienen
-
-select * from asignatura where creditos >= (select max(creditos) from asignatura);
-
--- Nombre de las asignaturas que no son las que más créditos tienen
-
-select * from asignatura where creditos <= (select min(creditos) from asignatura);
-
 
 /*===========================================================================================================================================================================*/
 
@@ -191,7 +134,8 @@ join curso_escolar ce on (ce.id = am.id_curso_escolar) join asignatura a on (a.i
 
 -- 4. Lista todos los profesores y el nombre de las asignaturas que imparten (incluye profesores sin asignaturas asignadas).
 
-select p.id_profesor, per.nombre as nombre_profesor ,a.nombre from profesor p  left join asignatura a on (p.id_profesor = a.id_profesor) join persona per on (per.id = p.id_profesor);
+select p.id_profesor, per.nombre as nombre_profesor ,a.nombre from profesor p  left join asignatura a on (p.id_profesor = a.id_profesor) 
+join persona per on (per.id = p.id_profesor);
 
 -- 5. Muestra todas las asignaturas con el nombre del profesor que las imparte. Incluye las asignaturas sin profesor asignado.
 
@@ -212,7 +156,7 @@ select a.nombre as nombre_asignatura, g.nombre as nombre_grado from asignatura a
 
 -- 3. Listar todas las asignaturas junto con el nombre y apellidos del profesor que las imparte.
 
-select a.nombre as nombre_asignatura, per.nombre as nombre_profesor, per.apellido1, per.apellido2 as nombre_asignatura 
+select a.nombre as nombre_asignatura, per.nombre as nombre_profesor, per.apellido1, per.apellido2 
 from asignatura a join profesor pro on (pro.id_profesor = a.id_profesor) 
 join persona per on (pro.id_profesor = per.id);
 
@@ -224,7 +168,8 @@ join departamento d on (pro.id_departamento = d.id);
 
 -- 5.Obtener el nombre de las asignaturas en las que esté matriculado el alumno llamado “Sonia”.
 
-select * from persona per right join alumno_se_matricula_asignatura am on (am.id_alumno = per.id) right join asignatura a on (a.id = am.id_asignatura) where per.nombre = "sonia";
+select * from persona per right join alumno_se_matricula_asignatura am on (am.id_alumno = per.id) 
+right join asignatura a on (a.id = am.id_asignatura) where per.nombre = "sonia";
 
 -- 6. Listar los departamentos que no tienen profesores asociados.
 
@@ -236,19 +181,27 @@ select * from asignatura where id_grado = (select id from grado where id = 4);
 
 -- 8. Obtener los nombres de los profesores que pertenecen al departamento de Informática.
 
-select * from profesor where id_departamento = (select id from departamento where nombre = "informatica");
+select * from profesor where id_departamento in (select id from departamento where nombre = "informatica");
+
+select per.nombre as "nombre profesor", d.nombre as "nombre departamento" from departamento d 
+join profesor pro on (d.id = pro.id_departamento) 
+join persona per on (per.id = pro.id_profesor) where d.nombre = "informatica";
 
 -- 9. Mostrar los alumnos matriculados en el curso escolar 2018–2019.
 
 select * from alumno_se_matricula_asignatura where id_curso_escolar = (select id from curso_escolar where anyo_inicio = 2018 and anyo_fin = 2019);
 
+select * from alumno_se_matricula_asignatura am join curso_escolar cur on (am.id_curso_escolar = cur.id) where anyo_inicio = 2018 and anyo_fin = 2019;
+
 -- 10. Obtener las asignaturas que tengan el mismo número de créditos que la asignatura “Bases de Datos”.
 
-select * from asignatura where creditos >= (select creditos from asignatura where nombre = "bases de datos");
+select * from asignatura where creditos = (select creditos from asignatura where nombre = "bases de datos");
 
 -- 11. Mostrar los grados que tengan al menos una asignatura sin profesor asignado.
 
 select * from grado where id in (select id_grado from asignatura where id_profesor is null);
+
+select * from grado g join asignatura a on (g.id = a.id_grado) where a.id_profesor is null;
 
 -- 12. Mostrar las asignaturas impartidas por profesores del departamento de Matemáticas.
 
