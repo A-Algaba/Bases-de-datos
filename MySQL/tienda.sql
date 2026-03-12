@@ -51,7 +51,7 @@ select * from articulos natural join fabricantes;
 
 -- realizar inserciones
 
-insert into articulos(nombre, precio, clave_fabircante, existencias) values
+insert into articulos(nombre, precio, clave_fabricante, existencias) values
 ("Altavoces", 120.00, 6, 9);
 
 -- usar esta sentencia para desactivar temporalmente el modo de actualizacion segura

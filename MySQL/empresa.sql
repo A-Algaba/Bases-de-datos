@@ -22,7 +22,7 @@ CREATE TABLE empleados(
 );
 
 -- definimos la clave foranea id_departamento de la tabla empleados
-ALTER TABLE empleados ADD CONSTRAINT fk_empleados FOREIGN KEY (id_departamento) REFERENCES departamento (id_departamento);
+ALTER TABLE empleados ADD CONSTRAINT fk_empleados FOREIGN KEY (id_departamento) REFERENCES departamento (id_departamento) ON DELETE SET NULL;
 
 -- mostramos las tablas disponibles y la estructura de la tabla empleados
 
@@ -32,7 +32,7 @@ DESCRIBE empleados;
 
 -- insertamos datos de la tabla departamentos
 
-insert into departamento (id_departamento, nombre, ciudad) values 
+INSERT INTO departamento (id_departamento, nombre, ciudad) VALUES
 (1, "Ventas", "Madrid"),
 (2, "Informática", "Sevilla"),
 (3, "Recursos Humanos","Valencia"),
@@ -40,7 +40,7 @@ insert into departamento (id_departamento, nombre, ciudad) values
 
 -- insertamos satos en la tabla empleados
 
-insert into empleados(nombre, salario, id_departamento) values 
+INSERT INTO empleados(nombre, salario, id_departamento) VALUES 
 ("Ana Gómez", 1850.00, 1),
 ("Luis Pérez", 2100.00, 2),
 ("Marta Ruiz", 1700.00, 4),
@@ -54,14 +54,15 @@ insert into empleados(nombre, salario, id_departamento) values
 INSERT INTO empleados(nombre, salario, id_departamento) VALUES 
 ("Sonia Lopez", 2150.00, 2),
 ("Mario Torres", 1780.00, 1),
-("Nuria Vega", 1900.00, 8)
-;
+("Nuria Vega", 1900.00, NULL);
 
 -- actualizamos datos
 
 UPDATE empleados SET salario = 1900.00 WHERE nombre = "Ana Gomez";
 
 UPDATE empleados SET salario = salario +  100 WHERE id_departamento = 2;
+
+UPDATE empleados SET id_departamento = 8 WHERE nombre = "Nuria Vega";
 
 --  consultas de prueba para comprobar los resultados
 select * from departamento;
