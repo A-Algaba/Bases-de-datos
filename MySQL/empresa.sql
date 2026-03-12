@@ -22,7 +22,7 @@ CREATE TABLE empleados(
 );
 
 -- definimos la clave foranea id_departamento de la tabla empleados
-ALTER TABLE empleados ADD CONSTRAINT fk_empleados FOREIGN KEY (id_departamento) REFERENCES departamento (id_departamento) ON DELETE SET NULL;
+ALTER TABLE empleados ADD CONSTRAINT fk_empleados FOREIGN KEY (id_departamento) REFERENCES departamento (id_departamento);
 
 -- mostramos las tablas disponibles y la estructura de la tabla empleados
 
@@ -54,7 +54,7 @@ INSERT INTO empleados(nombre, salario, id_departamento) VALUES
 INSERT INTO empleados(nombre, salario, id_departamento) VALUES 
 ("Sonia Lopez", 2150.00, 2),
 ("Mario Torres", 1780.00, 1),
-("Nuria Vega", 1900.00, NULL);
+("Nuria Vega", 1900.00, NULL); -- el id_departameno 8 no existe
 
 -- actualizamos datos
 
@@ -62,7 +62,31 @@ UPDATE empleados SET salario = 1900.00 WHERE nombre = "Ana Gomez";
 
 UPDATE empleados SET salario = salario +  100 WHERE id_departamento = 2;
 
-UPDATE empleados SET id_departamento = 8 WHERE nombre = "Nuria Vega";
+UPDATE departamento SET ciudad = "Malaga" WHERE id_departamento = 4;
+
+UPDATE empleados SET id_departamento = 3 WHERE nombre = "Marta Ruiz";
+
+UPDATE empleados SET salario = salario + 50 WHERE  id_departamento = (SELECT id_departamento 
+FROM departamento WHERE ciudad = "Madrid");
+
+UPDATE empleados SET  salario = salario - 100 WHERE id_departamento = (
+    SELECT id_departamento FROM departamento WHERE nombre = "Ventas"
+);
+
+-- eliminar datos
+
+DELETE FROM empleados WHERE nombre = "Pablo Díaz";
+
+DELETE FROM empleados WHERE salario <= 1800;
+
+-- modificamos clave foranea
+ALTER TABLE empleados DROP FOREIGN KEY fk_empleados;
+
+ALTER TABLE empleados ADD CONSTRAINT fk_empleados FOREIGN KEY (id_departamento) REFERENCES departamento (id_departamento) ON DELETE SET NULL;
+
+DELETE FROM departamento WHERE nombre = "Ventas";
+
+DELETE FROM departamento WHERE nombre = "Informatica";
 
 --  consultas de prueba para comprobar los resultados
 select * from departamento;
