@@ -1,38 +1,34 @@
-drop database empresa;
-create database empresa;
+DROP DATABASE empresa;
 
-use empresa;
+CREATE DATABASE empresa;
+
+USE empresa;
 
 -- creamos la tabla departamentos
 
-create table departamento(
-	id_departamento int,
-    nombre varchar(40),
-    ciudad varchar (40)
+CREATE TABLE departamento(
+	id_departamento INT PRIMARY KEY,
+    nombre VARCHAR(40),
+    ciudad VARCHAR(40)
 );
 
 -- creamos la tabla empleados
 
-create table empleados(
-	id_empleado int,
-    nombre varchar(50),
-    salario decimal(8,2),
-    id_departamento int
+CREATE TABLE empleados(
+	id_empleado INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(50),
+    salario DECIMAL(8,2),
+    id_departamento INT
 );
 
--- definimos las claves primarias y foraneas
-
-alter table departamento add constraint pk_departamento primary key(id_departamento);
-
-alter table empleados add constraint pk_empleados primary key (id_empleado);
-
-alter table empleados add constraint fk_empleados foreign key (id_departamento) references departamento (id_departamento);
+-- definimos la clave foranea id_departamento de la tabla empleados
+ALTER TABLE empleados ADD CONSTRAINT fk_empleados FOREIGN KEY (id_departamento) REFERENCES departamento (id_departamento);
 
 -- mostramos las tablas disponibles y la estructura de la tabla empleados
 
-show tables;
+SHOW tables;
 
-describe empleados;
+DESCRIBE empleados;
 
 -- insertamos datos de la tabla departamentos
 
@@ -53,6 +49,21 @@ insert into empleados(nombre, salario, id_departamento) values
 ("Pablo Díaz", 1800.00, 1),
 ("Laura Gil", 1750.00, 4);
 
+-- nuevas inserciones
+
+INSERT INTO empleados(nombre, salario, id_departamento) VALUES 
+("Sonia Lopez", 2150.00, 2),
+("Mario Torres", 1780.00, 1),
+("Nuria Vega", 1900.00, 8)
+;
+
+-- actualizamos datos
+
+UPDATE empleados SET salario = 1900.00 WHERE nombre = "Ana Gomez";
+
+UPDATE empleados SET salario = salario +  100 WHERE id_departamento = 2;
+
+--  consultas de prueba para comprobar los resultados
 select * from departamento;
 
 select * from empleados;
