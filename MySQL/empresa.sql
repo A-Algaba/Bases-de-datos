@@ -69,7 +69,7 @@ UPDATE empleados SET id_departamento = 3 WHERE nombre = "Marta Ruiz";
 UPDATE empleados SET salario = salario + 50 WHERE  id_departamento = (SELECT id_departamento 
 FROM departamento WHERE ciudad = "Madrid");
 
-UPDATE empleados SET  salario = salario - 100 WHERE id_departamento = (
+UPDATE empleados SET salario = salario - 100 WHERE id_departamento = (
     SELECT id_departamento FROM departamento WHERE nombre = "Ventas"
 );
 
@@ -88,7 +88,28 @@ DELETE FROM departamento WHERE nombre = "Ventas";
 
 DELETE FROM departamento WHERE nombre = "Informatica";
 
---  consultas de prueba para comprobar los resultados
-select * from departamento;
+DELETE FROM empleados WHERE id_departamento IN (SELECT id_departamento FROM departamento WHERE nombre = "Recursos Humanos");
 
-select * from empleados;
+DELETE FROM departamento WHERE nombre = "Recursos humanos";
+
+DELETE FROM empleados WHERE id_departamento IN (SELECT id_departamento FROM departamento WHERE ciudad = "Malaga");
+
+DELETE FROM departamento WHERE nombre = "Administracion";
+
+-- comprobaciones finales
+
+INSERT INTO empleados (nombre, salario, id_departamento) VALUES 
+("Juan", 1900.00, 7); -- no se puede porque en la tabla referenciada (la tabla departamento), no hay ningun regsitro de id 7
+
+UPDATE empleados SET id_departamento = 8 WHERE nombre = "Ana Gómez"; -- no se puede modificar porque no existe ningun departamento con un id 8 en la tabla  departamento
+
+DELETE departamento WHERE id_departamento = 1; -- no se puede porque hay empleados asociados en el departamento 1 (integridad referencial)
+
+--  consultas de prueba para comprobar los resultados
+SELECT * FROM departamento;
+
+SELECT * FROM empleados;
+
+SELECT e.*, d.nombre FROM empleados e JOIN departamento d ON (e.id_departamento = d.id_departamento);
+
+SELECT * FROM empleados e JOIN departamento d ON (e.id_departamento = d.id_departamento) WHERE e.id_departamento IS NULL;
