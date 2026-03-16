@@ -94,6 +94,8 @@ UPDATE libros SET stock = -3 WHERE titulo = "Viaje al futuro"; -- al volver a ej
 
 UPDATE libro SET id_categoria = 8 WHERE titulo = "Viaje a mas alla de marte"; -- da error porque no se puede cambiar la categoria de un libro a una categoria que no existe, es como el mismo ejemplo de anes de la empresa, no puedes meter a un empleado a un departamento que no existe, no tendria sentido
 
+UPDATE socios SET activo = 0 WHERE id_socio IN (SELECT id_socio FROM prestamos WHERE fecha_devolucion IS NULL);
+
 -- delete
 
 DELETE FROM libros WHERE id_categoria = 1; -- no deberia dejar eliminar porque hay libros asociados a una catgeoria activa, respetando al integridad referencial

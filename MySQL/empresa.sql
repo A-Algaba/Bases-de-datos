@@ -1,8 +1,8 @@
-DROP DATABASE empresa;
+DROP DATABASE empresa_practicar;
 
-CREATE DATABASE empresa;
+CREATE DATABASE empresa_practicar;
 
-USE empresa;
+USE empresa_practicar;
 
 -- creamos la tabla departamentos
 
