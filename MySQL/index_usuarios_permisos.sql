@@ -102,3 +102,48 @@ flush privileges; -- actualiza los permisos asignados para poder hacer pruebas e
 revoke insert on GESTION_CENTRO.asignaturas from "daniel_user"@"%";
 
 SHOW GRANTS FOR 'daniel_user'@'%';
+
+-- practicar
+
+create user "usuario_prueba"@"localhost" identified by "123456";
+
+use GESTION_CENTRO;
+
+select * from profesores;
+
+select * from asignaturas;
+
+-- crear indice
+
+create index idx_prueba on asignaturas(nombre_asig);
+
+select * from asignaturas where nombre_asig = "Bases de datos";
+
+-- crear vista
+
+create view vista_prueba as
+select a.nombre_asig, p.nombre from profesores p join asignaturas a on (p.id_profesor = a.id_profesor);
+
+select * from vista_prueba;
+
+-- agregar o quitar permisos
+
+grant select, insert on GESTION_CENTRO.* to "usuario_prueba"@"localhost";
+
+revoke insert on GESTION_CENTRO.asignaturas from "usuario_prueba"@"localhost";
+
+show grants for "usuario_prueba"@"localhost";
+
+grant delete on gestion_centro.asignaturas to "usuario_prueba"@"localhost";
+
+revoke select, delete on gestion_centro.asignaturas from "usuario_prueba"@"localhost";
+
+revoke select, delete on gestion_centro.* from "usuario_prueba"@"localhost";
+
+revoke select on gestion_centro.* from "usuario_prueba"@"localhost";
+
+grant select on gestion_centro.* to "usuario_prueba"@"localhost";
+
+grant select on gestion_centro.vista_prueba to "usuario_prueba"@"localhost";
+
+flush privileges;
