@@ -26,6 +26,7 @@ select * from partido where year (fecha) < "2012";
 select avg(salario) as salario_medio from jugador;
 
 -- a2
+select * from jugador;
 
 select equipo, sum(altura) as suma_alturas from jugador group by equipo having suma_alturas > 5;
 
