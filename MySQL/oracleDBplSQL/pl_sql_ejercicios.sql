@@ -117,27 +117,3 @@ begin
         when OTHERS then
             dbms_output.PUT_LINE('Error desconocido');
 end;
-
-/
-
--- excepcion personalizada
-
-declare
-
-    edad number := -1;
-    edad_exception exception;
-
-begin
-
-    if edad < 0 or edad > 120 then
-        raise edad_exception; -- raise sirve para llamar a una excepcion que hayas creado tu mismo, importante saber que con raise se debe declarar la variable con exception
-    end if;
-    
-    exception 
-        when edad_exception then
-            dbms_output.PUT_LINE('Error en la variable edad');
-
-end;
-
-/
-
