@@ -1,4 +1,4 @@
--- 1. Eliminaci√≥n de tablas previas si existen
+-- 1. EliminaciÛn de tablas previas si existen
 DROP TABLE vende CASCADE CONSTRAINTS;
 DROP TABLE coche CASCADE CONSTRAINTS;
 DROP TABLE modelo_coche CASCADE CONSTRAINTS;
@@ -68,20 +68,20 @@ CREATE TABLE vende (
   CONSTRAINT fk_venta_tipos_forma_pago FOREIGN KEY (id_forma_pago) REFERENCES tipos_forma_pago
 );
 
--- 3. Inserci√≥n de datos
+-- 3. InserciÛn de datos
 
 -- Puestos
 INSERT INTO tipos_puesto VALUES (1, 'Vendedor particulares');
 INSERT INTO tipos_puesto VALUES (2, 'Coordinador ventas');
 INSERT INTO tipos_puesto VALUES (3, 'Recepcionista');
-INSERT INTO tipos_puesto VALUES (4, 'Mec√°nico');
+INSERT INTO tipos_puesto VALUES (4, 'Mec·nico');
 INSERT INTO tipos_puesto VALUES (5, 'Vendedor empresas');
 
 -- Empleados
-INSERT INTO empleado VALUES ('05678245B','Garc√≠a G√≥mez, Andr√©s',3,'694532211', 2000);
-INSERT INTO empleado VALUES ('90774536C','P√©rez P√©rez, Luisa',1,'676885643', 2016);
-INSERT INTO empleado VALUES ('45327865A','G√≥mez Rubio, Ana',5,'654772134', 2014);
-INSERT INTO empleado VALUES ('05789494D','Mart√≠nez Alberca, Jos√©',4,null, 2002);
+INSERT INTO empleado VALUES ('05678245B','GarcÌa GÛmez, AndrÈs',3,'694532211', 2000);
+INSERT INTO empleado VALUES ('90774536C','PÈrez PÈrez, Luisa',1,'676885643', 2016);
+INSERT INTO empleado VALUES ('45327865A','GÛmez Rubio, Ana',5,'654772134', 2014);
+INSERT INTO empleado VALUES ('05789494D','MartÌnez Alberca, JosÈ',4,null, 2002);
 
 -- Marcas
 INSERT INTO marcas_coche VALUES (1,'Renault');
@@ -95,15 +95,15 @@ INSERT INTO marcas_coche VALUES (8,'Opel');
 
 -- Modelos
 INSERT INTO modelo_coche VALUES (1,'A5 modelo alta gama',4);
-INSERT INTO modelo_coche VALUES (2,'Zafira A√±o 2015',8);
+INSERT INTO modelo_coche VALUES (2,'Zafira AÒo 2015',8);
 INSERT INTO modelo_coche VALUES (3,'Kangoo',3);
 INSERT INTO modelo_coche VALUES (4,'Golf GTI',7);
-INSERT INTO modelo_coche VALUES (5,'A4 b√°sico',4);
+INSERT INTO modelo_coche VALUES (5,'A4 b·sico',4);
 INSERT INTO modelo_coche VALUES (6,'C4 Exclusive',3);
 INSERT INTO modelo_coche VALUES (7,'C4 Gran Picasso',3);
 INSERT INTO modelo_coche VALUES (10,'Kouga',2);
 INSERT INTO modelo_coche VALUES (11,'DS C4',3);
-INSERT INTO modelo_coche VALUES (12,'Astra A√±o 2014',8);
+INSERT INTO modelo_coche VALUES (12,'Astra AÒo 2014',8);
 
 -- Coches
 INSERT INTO coche VALUES ('3345GVF', 1, 6000);
@@ -120,14 +120,14 @@ INSERT INTO coche VALUES ('4569GVA', 6, 5000);
 INSERT INTO coche VALUES ('9876AFF', 6, 5000);
 
 -- Clientes
-INSERT INTO cliente VALUES ('07541212F','Fern√°ndez Arco, Cristina','926227345');
+INSERT INTO cliente VALUES ('07541212F','Fern·ndez Arco, Cristina','926227345');
 INSERT INTO cliente VALUES ('05478218A','Gracia Soler, Luis Alberto','676443789');
 INSERT INTO cliente VALUES ('04787675D','Ruiz Morales, Fernando','654332211');
 
 -- Formas de pago
 INSERT INTO tipos_forma_pago VALUES (1,'Contado');
 INSERT INTO tipos_forma_pago VALUES (2,'Tarjeta');
-INSERT INTO tipos_forma_pago VALUES (3,'Tal√≥n');
+INSERT INTO tipos_forma_pago VALUES (3,'TalÛn');
 INSERT INTO tipos_forma_pago VALUES (4,'Transferencia');
 INSERT INTO tipos_forma_pago VALUES (5,'Financiado');
 
