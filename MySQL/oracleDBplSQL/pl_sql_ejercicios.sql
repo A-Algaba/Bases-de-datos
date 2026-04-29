@@ -89,6 +89,25 @@ end;
 
 /
 
+-- Ejercicio 5 corregido
+
+declare
+
+    v_matricula coche.matricula%type := '&matricula';
+    v_coche coche%rowtype;
+
+begin
+
+    select * into v_coche from coche
+    where matricula = v_matricula;
+    
+    dbms_output.put_line('Informacion del coche - Matricula ' || v_coche.matricula || chr(10) || ' descripcion ' || v_coche.id_modelo || chr(10) || ' precio ' 
+    || v_coche.precio_compra );
+
+end;
+
+/
+
 -- Ejercicio 6
 
 declare
