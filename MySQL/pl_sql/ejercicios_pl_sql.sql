@@ -191,3 +191,29 @@ begin
 end;
 
 update coche set precio_compra = 800 where matricula = '3345GVF';
+
+-- procedimientos
+
+create or replace procedure mostrar_ventas_empleado(v_dni in empleado.dni%type) as
+    v_total_ventas number;
+
+begin
+    select count(dni_empleado) into v_total_ventas
+    from vende v join empleado e on (v.dni_empleado = e.dni)
+    where e.dni = v_dni;
+
+    if v_total_ventas = 0 then
+    dbms_output.put_line('El empleado ' || v_dni || ' no tiene ventas');
+    elsif v_total_ventas > 0 then
+    dbms_output.put_line('El empleado ' || v_dni || ' tiene ventas ' || v_total_ventas);
+    end if;
+end;
+
+/
+
+declare
+    v_cantidad_ventas vende.dni_empleado%type := '90774536C';
+
+begin
+    mostrar_ventas_empleado(v_cantidad_ventas);
+end;
