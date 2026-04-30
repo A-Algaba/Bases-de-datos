@@ -151,14 +151,43 @@ end;
 
 declare
 
-    v_id_marca marcas_coche.id_marca%type;
-    v_marca_citroen marcas_coche.marca%type;
-
+    v_cantidad number;
+    v_marca marcas_coche.marca%type := 'Citroen';
 begin
 
-    select count(id_marca), marca into v_id_marca, v_marca_citroen
-    from marcas_coche group by v_marca_citroen having marca = 'citroen';
+    select count(*) into v_cantidad
+    from modelo_coche mo join marcas_coche ma 
+    on (mo.id_marca = ma.id_marca) where ma.marca = v_marca;
 
-    dbms_output.PUT_LINE('El total de citroens que hay es de ' + v_id_marca);
+    dbms_output.PUT_LINE('El total de citroens que hay es de ' || v_cantidad);
 
 end;
+
+/
+
+-- ejercicios de triggers
+
+alter table coche add fecha_insercion date;
+
+create or replace trigger trg_coche_insercion
+before insert on coche
+for each row
+begin 
+    :new.fecha_insercion := sysdate;
+end;
+
+insert into coche(matricula, id_modelo, precio_compra) values
+('222333A', 2, 3);
+
+-- ejercicio 3 de disparadores
+
+create or replace trigger trg_no_bajar_precio
+before update of precio_compra on coche
+for each row
+begin
+    if :new.precio_compra < :old.precio_compra then
+    raise_application_error(- 20001, 'El precio_compra no puede ser inferior');
+    end if;
+end;
+
+update coche set precio_compra = 800 where matricula = '3345GVF';
