@@ -248,9 +248,104 @@ end;
 -- funcion
 -- Función que devuelve el nombre de un cliente, pasa el dni por parámetro. (en caso de NO_DATA_FOUND lanzar excepción)
 
-create or replace function coches_vendidos_empleado(v_nombre_empleado empleado.nombre%type)
+create or replace function nombre_cliente_encontrar(v_dni_cliente cliente.dni%type)
     return varchar2 as
-    
-
+    v_cliente_nombre cliente.nombre%type;
 begin
-    select count()
+    select nombre into v_cliente_nombre
+    from cliente where v_dni_cliente = dni;
+
+    
+    return v_cliente_nombre;
+    exception
+        when no_data_found then
+        dbms_output.put_line('No se encontro ningun cliente con ese dni');
+        return null;
+end;
+
+-- mostramos el resultado
+
+declare
+    v_dni_cliente cliente.dni%type := '07541212F';
+    v_encontrado varchar(100);
+begin
+    v_encontrado := nombre_cliente_encontrar(v_dni_cliente);
+    dbms_output.put_line('El nombre del cliente cuyo dni es ' || v_dni_cliente || ' es ' || v_encontrado);
+end;
+
+-- ejercicios inventados
+
+-- Ejercicio 1
+-- Crea una función que reciba la matrícula de un coche y devuelva su precio de compra.
+
+create or replace function matricula_precio_coche(v_matricula vende.matricula%type)
+    return number as
+    v_precio vende.precio%type;
+begin
+    select precio into v_precio
+    from vende where matricula = v_matricula;
+    
+    return v_precio;
+end;
+
+declare
+    v_matricula_coche vende.matricula%type := '3345GVF';
+    v_resultado vende.precio%type;
+begin
+    v_resultado := matricula_precio_coche(v_matricula_coche);
+    dbms_output.put_line('El precio del coche cuya matricula es ' || v_matricula_coche || ' es de ' || v_resultado);
+end;
+
+-- Ejercicio 2 
+-- Crea un procedimiento que reciba el DNI de un cliente y muestre por consola su nombre y teléfono.
+
+create or replace procedure datos_cliente(v_dni_cliente cliente.dni%type) as
+    v_nombre cliente.nombre%type;
+    v_telef cliente.telef%type;
+begin
+    select nombre, telef into v_nombre, v_telef
+    from cliente where dni = v_dni_cliente;
+    dbms_output.put_line('Datos del cliente cuyo dni es ' || v_dni_cliente || ', nombre: ' || v_nombre || ', telef: ' || v_telef);
+end;
+
+declare
+    v_dni_cliente cliente.dni%type := '05478218A';
+begin
+    datos_cliente(v_dni_cliente);
+end;
+
+-- Ejercicio 3
+-- Crea un trigger que impida insertar un coche con un precio de compra negativo.
+
+create or replace trigger evitar_precios_negativos
+before insert on coche
+for each row
+begin
+    if:new.precio_compra <= 0 then
+        raise_application_error(- 20001, 'No se permite poner precios negativos');
+        end if;
+end;
+
+INSERT INTO COCHE (
+    MATRICULA,
+    ID_MODELO,
+    PRECIO_COMPRA
+) VALUES ('9999AA', '1', 0);
+
+-- Ejercicio 4
+-- Crea un procedimiento que reciba una forma de pago y muestre cuántas ventas se han realizado con esa forma de pago.
+
+create or replace procedure mostrar_ventas_pago(v_forma_pago tipos_forma_pago.forma_pago%type) as
+    v_ventas vende.id_forma_pago%type;
+begin
+    select count(v.id_forma_pago) into v_ventas
+    from vende v join tipos_forma_pago t on (v.id_forma_pago = t.id_forma_pago)
+    where forma_pago = v_forma_pago;
+    dbms_output.put_line('El tipo cantidad de ventas con el pago ' || v_forma_pago || ' es de ' || v_ventas);
+end;
+
+declare
+    v_tipo_pago tipos_forma_pago.forma_pago%type := 'Financiado';
+begin
+    mostrar_ventas_pago(v_tipo_pago);
+end;
