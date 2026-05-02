@@ -217,4 +217,40 @@ declare
 begin
     mostrar_ventas_empleado(v_cantidad_ventas);
 end;
--- completado
+
+/
+
+-- Crea un procedimiento que reciba como parámetro la matrícula de un coche vendido. El procedimiento debe mostrar por pantalla el nombre del cliente que 
+-- compró el coche, el nombre del empleado que realizó la venta, el precio de venta (debe manejar  NO_DATA_FOUND).
+
+create or replace procedure matricula_coche_vendido(v_matricula vende.matricula%type) as
+    v_precio number;
+    v_nombre_cliente cliente.nombre%type;
+    v_nombre_empleado empleado.nombre%type;
+
+begin
+    select v.precio, c.nombre, e.nombre into v_precio, v_nombre_cliente, v_nombre_empleado
+    from vende v join cliente c on (v.dni_cliente  = c.dni)
+    join empleado e on (v.dni_empleado = e.dni)
+    where v.matricula = v_matricula;
+
+    dbms_output.put_line('Datos del coche vendido, matricula: ' || v_matricula || ' precio: ' || v_precio || ' nombre del cliente que lo compro: ' || v_nombre_cliente || 'nombre del empleado encargado: ' || v_nombre_empleado);
+end;
+
+-- ejecutamos el procedimiento
+
+declare
+    v_matricula vende.matricula%type := '3345GVF';
+begin
+    matricula_coche_vendido(v_matricula);
+end;
+
+-- funcion
+-- Función que devuelve el nombre de un cliente, pasa el dni por parámetro. (en caso de NO_DATA_FOUND lanzar excepción)
+
+create or replace function coches_vendidos_empleado(v_nombre_empleado empleado.nombre%type)
+    return varchar2 as
+    
+
+begin
+    select count()
