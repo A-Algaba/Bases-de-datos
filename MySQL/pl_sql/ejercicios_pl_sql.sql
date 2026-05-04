@@ -349,3 +349,24 @@ declare
 begin
     mostrar_ventas_pago(v_tipo_pago);
 end;
+
+-- Ejercicio 5
+-- Crea un trigger que impida realizar una venta si el coche con esa matrícula ya ha sido vendido anteriormente.
+
+create or replace trigger impedir_venta_coche
+before insert on vende
+for each row
+declare
+    v_contar_coches number;
+begin
+
+    select count(*) into v_contar_coches
+    from vende where matricula = :new.matricula;
+
+    if v_contar_coches > 0 then
+        raise_application_error(-20003, 'No se puede vender un coche, que ya esta vendido');
+    end if;
+end;
+
+insert into vende(dni_empleado, dni_cliente, matricula, id_forma_pago, precio) values
+('90774536C', '07541212F', '8666KKK', '5', '2000');
