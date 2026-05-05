@@ -127,6 +127,23 @@ begin
     dbms_output.PUT_LINE('Informacion del coche: ' || v_descripcion || ' - ' || v_id_marca || ' - ' || v_marca);
 end;
 
+-- ejercicio6 corregido
+
+declare
+    v_id_modelo modelo_coche.id_modelo%type := &modelochoche;
+    v_modelo modelo_coche%rowtype;
+    v_marca marcas_coche.marca%type;
+
+begin
+
+    select m.id_modelo, m.descripcion, ma.marca into v_modelo.id_modelo, v_modelo.descripcion, v_marca
+    from modelo_coche m join marcas_coche ma on (m.id_marca = ma.id_marca) where m.id_modelo = v_id_modelo;
+
+    dbms_output.put_line('Modelo id: ' || v_id_modelo || chr(10) ||
+    ' descripcion: ' || v_modelo.descripcion || chr(10) || 
+    ' marca: ' || v_marca);
+end;
+
 /
 
 -- Ejercicio 7
@@ -235,6 +252,8 @@ begin
     where v.matricula = v_matricula;
 
     dbms_output.put_line('Datos del coche vendido, matricula: ' || v_matricula || ' precio: ' || v_precio || ' nombre del cliente que lo compro: ' || v_nombre_cliente || 'nombre del empleado encargado: ' || v_nombre_empleado);
+    
+    exception when no_data_found then dbms_output.put_line('No se encontro los datos del coche con los datos especificos');
 end;
 
 -- ejecutamos el procedimiento
@@ -271,6 +290,25 @@ declare
 begin
     v_encontrado := nombre_cliente_encontrar(v_dni_cliente);
     dbms_output.put_line('El nombre del cliente cuyo dni es ' || v_dni_cliente || ' es ' || v_encontrado);
+end;
+
+-- Función que devuelve el número de coches vendidos por un empleado
+
+create or replace function buscar_empleado_vende(v_dni_empleado empleado.dni%type)
+    return number as
+    v_coches number;
+begin
+    select count(matricula) into v_coches
+    from vende where dni_empleado = v_dni_empleado;
+    return v_coches;
+end;
+
+declare
+    v_dni_empleado empleado.dni%type := '90774536C';
+    v_resultado number;
+begin
+    v_resultado := buscar_empleado_vende(v_dni_empleado);
+    dbms_output.put_line('DNI del empleado: ' || v_dni_empleado || ' ha vendido en total: ' || v_resultado || ' coches');
 end;
 
 -- ejercicios inventados
